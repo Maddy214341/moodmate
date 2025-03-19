@@ -3,7 +3,7 @@ from pydantic import BaseModel
 from transformers import pipeline
 import faiss
 import numpy as np
-from py2neo import Graph
+from neo4j import GraphDatabase
 from llama_cpp import Llama
 import requests
 from bs4 import BeautifulSoup
@@ -42,7 +42,7 @@ NEO4J_PASSWORD = os.getenv("NEO4J_PASSWORD")
 print(f"NEO4J_URI: {repr(NEO4J_URI)}")
 print(f"NEO4J_USER: {repr(NEO4J_USER)}")
 print(f"NEO4J_PASSWORD: {repr(NEO4J_PASSWORD)}")
-graph = Graph(NEO4J_URI, auth=(NEO4J_USER, NEO4J_PASSWORD))
+graph = GraphDatabase.driver(NEO4J_URI, auth=(NEO4J_USER, NEO4J_PASSWORD))
 
 # Load LLaMA-3 for response generation
 llm = Llama.from_pretrained(
@@ -96,3 +96,8 @@ async def generate_response(request: TextRequest):
     prompt = f"User Emotion: {request.text}\nAI Response:"
     response = llm(prompt, max_tokens=100)
     return {"response": response["choices"][0]["text"]}
+
+
+@app.get("/status")
+async def generate_response():
+    return {"status" : "Server is running"}
