@@ -133,7 +133,6 @@ export default function Chat() {
               content: aiResponse,
             };
             setMessages((prevMessages) => [...prevMessages, aiMessage]);
-
           }
         }
       };
