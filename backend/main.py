@@ -94,7 +94,7 @@ async def retrieve_knowledge(request: TextRequest):
 async def generate_response(request: TextRequest):
     """Generates empathetic responses using LLaMA-3."""
     prompt = f"User Emotion: {request.text}\nAI Response:"
-    response = llm(prompt, max_tokens=100)
+    response = llm(prompt, max_tokens=None)
     return {"response": response["choices"][0]["text"]}
 
 

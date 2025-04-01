@@ -11,6 +11,7 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { RegistrationAction } from "./RegistrationFormAction"
 import { useState } from "react"
 import { toast } from "sonner"
+import { useRouter } from "next/navigation"
 
 const formSchema = z.object({
   username: z.string().min(2, {
@@ -45,12 +46,13 @@ const [submitting, isSubmitting] = useState(false)
       confirmPassword:""
     },
   })
- 
+ const router = useRouter()
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof formSchema>) {
     isSubmitting(true)
     const res = await RegistrationAction(values.username, values.email, values.password)
     isSubmitting(false)
+    router.push("/login")
     toast(res.message)
   }
 
